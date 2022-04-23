@@ -1,27 +1,36 @@
-const { findOne } = require('./models');
+const {
+  findOne, findStyles, findMany, findRelated,
+} = require('./models');
 
-const getProducts = (req, res) => {
-  console.log(req.params);
+const getProducts = async (req, res) => {
+  const { count, page } = req.query;
+  const data = await findMany(page, count);
+  res.json(data);
 };
-const getOneProduct = (req, res) => {
+const getOneProduct = async (req, res) => {
   const id = req.params.product_id;
-  const result = findOne(id);
-  res.json(result);
+  const data = await findOne(id);
+  res.json(data);
 };
-const getStyles = (req, res) => {
-  console.log(req.params);
+const getStyles = async (req, res) => {
+  const id = req.params.product_id;
+  const data = await findStyles(id);
+  res.json(data);
 };
-const getRelated = (req, res) => {
-  console.log(req.params);
+const getRelated = async (req, res) => {
+  const id = req.params.product_id;
+  const data = await findRelated(id);
+  res.json(data);
 };
-const addProduct = (req, res) => {
-  console.log(req.params);
-};
+// const addProduct = async (req, res) => {
+//   console.log(req.params);
+//   const data = await addToProducts(id);
+//   res.json(data);
+// };
 
 module.exports = {
   getProducts,
   getOneProduct,
   getStyles,
   getRelated,
-  addProduct,
 };

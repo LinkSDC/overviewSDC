@@ -19,5 +19,6 @@ module.exports = {
   ],
   rules: {
     'no-console': 'off',
+    'prefer-destructuring': ['error', { object: false, array: false }],
   },
 };
