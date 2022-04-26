@@ -23,13 +23,43 @@ async function findOne(id) {
           ) features
         ) s
       ) p
-      WHERE product_id = $1;`, [id]);
+      WHERE product_id = $1`, [id]);
   if (!result || !result.rows || !result.rows.length) return [];
   return result.rows[0].product;
 }
 
 async function findStyles(id) {
-  const result = await db.query('SELECT * FROM styles WHERE product_id = $1', [id]);
+  const result = await db.query(`SELECT s.product_id AS product_id,
+  JSON_AGG(
+    JSON_BUILD_OBJECT(
+      'style_id', s.id,
+      'name', s.style_name,
+      'original_price', s.original_price,
+      'sale_price', s.sale_price,
+      'default?', s.default_style,
+      'photos', (
+        SELECT JSON_AGG(
+          JSON_BUILD_OBJECT(
+            'thumbnail_url', photos.thumbnail_url,
+            'url', photos.url
+          )
+        )
+        FROM photos WHERE photos.style_id=s.id
+      ),
+      'skus', (
+        SELECT JSON_OBJECT_AGG(
+          inventory.id, JSON_BUILD_OBJECT(
+            'quantity', inventory.quantity,
+            'size', inventory.inv_size
+          )
+        )
+        FROM inventory WHERE inventory.style_id=s.id
+      )
+    )
+  ) AS results
+  FROM styles s
+  WHERE s.product_id = $1
+  GROUP BY s.product_id`, [id]);
   if (!result || !result.rows || !result.rows.length) return [];
   return result.rows;
 }
@@ -46,44 +76,3 @@ module.exports = {
   findMany,
   findRelated,
 };
-
-// working array of objects
-// SELECT json_agg(json_build_object(
-//   'feature', "feature",
-//   'value' , "feat_val"))
-// FROM   features
-// WHERE product_id = 66545;
-
-// working product + related
-// SELECT json_agg(pro)
-// AS product
-// FROM (
-//   SELECT *
-//   FROM product p
-//   CROSS JOIN LATERAL (
-//     SELECT json_agg(features) AS features
-//     FROM (
-//       SELECT feature, feat_val
-//       FROM features
-//       WHERE product_id = p.product_id
-//     ) features
-//   ) s
-// ) pro WHERE product_id = 66545;
-
-// SELECT *
-// FROM (
-//   SELECT *
-//   FROM product p
-//   CROSS JOIN LATERAL (
-//     SELECT json_agg(features) AS features
-//     FROM (
-//       SELECT feature, feat_val
-//       FROM features
-//       WHERE product_id = p.product_id
-//     ) features
-//   ) s
-// ) pro OFFSET 3 LIMIT 5;
-
-// SELECT * FROM styles
-// LEFT JOIN photos
-// ON product_id = styles.product_id LIMIT 2;
