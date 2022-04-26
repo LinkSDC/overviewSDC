@@ -3,7 +3,7 @@ const {
 } = require('./models');
 
 const getProducts = async (req, res) => {
-  const { count, page } = req.query;
+  const { page, count } = req.query;
   const data = await findMany(page, count);
   res.json(data);
 };
@@ -22,11 +22,6 @@ const getRelated = async (req, res) => {
   const data = await findRelated(id);
   res.json(data);
 };
-// const addProduct = async (req, res) => {
-//   console.log(req.params);
-//   const data = await addToProducts(id);
-//   res.json(data);
-// };
 
 module.exports = {
   getProducts,
