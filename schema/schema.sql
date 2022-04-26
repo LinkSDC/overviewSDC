@@ -12,11 +12,13 @@ CREATE TABLE IF NOT EXISTS product (
  category      varchar(50) NOT NULL,
  default_price int NOT NULL
 );
+
 COPY product(product_id, name, slogan, description, category, default_price)
 FROM '/Users/andreworodenker/desktop/repos/SDC/csv/product.csv'
 DELIMITER ','
 CSV HEADER;
-CREATE INDEX idx_prod_product_id_hash ON product USING HASH (product_id);
+
+CREATE INDEX idx_prod_product_id_hash ON product (product_id);
 
 /* RELATED */
 CREATE TABLE IF NOT EXISTS related (
@@ -25,11 +27,13 @@ CREATE TABLE IF NOT EXISTS related (
  related_id  int NOT NULL,
  FOREIGN KEY ( product_id ) REFERENCES product ( product_id )
 );
+
 COPY related(id, product_id, related_id)
 FROM '/Users/andreworodenker/desktop/repos/SDC/csv/related.csv'
 DELIMITER ','
 CSV HEADER;
-CREATE INDEX idx_product_id_hash ON related USING HASH (product_id);
+
+CREATE INDEX idx_product_id_hash ON related (product_id);
 
 /* STYLES */
 CREATE TABLE IF NOT EXISTS styles (
@@ -41,11 +45,13 @@ CREATE TABLE IF NOT EXISTS styles (
  default_style  int NOT NULL,
  FOREIGN KEY ( product_id ) REFERENCES product ( product_id )
 );
+
 COPY styles(id, product_id, style_name, sale_price, original_price, default_style)
 FROM '/Users/andreworodenker/desktop/repos/SDC/csv/styles.csv'
 DELIMITER ','
 CSV HEADER;
-CREATE INDEX idx_styles_product_id_hash ON styles USING HASH (product_id);
+
+CREATE INDEX idx_styles_product_id_hash ON styles (product_id);
 
 /* FEATURES */
 CREATE TABLE IF NOT EXISTS features (
@@ -55,11 +61,13 @@ CREATE TABLE IF NOT EXISTS features (
  value      varchar(50),
  FOREIGN KEY ( product_id ) REFERENCES product ( product_id )
 );
+
 COPY features(id, product_id, feature, feat_val)
 FROM '/Users/andreworodenker/desktop/repos/SDC/csv/features.csv'
 DELIMITER ','
 CSV HEADER;
-CREATE INDEX idx_features_product_id_hash ON features USING HASH (product_id);
+
+CREATE INDEX idx_features_product_id_hash ON features (product_id);
 
 /* PHOTOS */
 CREATE TABLE IF NOT EXISTS photos (
@@ -69,11 +77,13 @@ CREATE TABLE IF NOT EXISTS photos (
  thumbnail_url  text NOT NULL,
  FOREIGN KEY ( style_id ) REFERENCES styles ( id )
 );
+
 COPY photos(id, style_id, url, thumbnail_url)
 FROM '/Users/andreworodenker/desktop/repos/SDC/csv/photos.csv'
 DELIMITER ','
 CSV HEADER;
-CREATE INDEX idx_photos_product_id_hash ON photos USING HASH (style_id);
+
+CREATE INDEX idx_photos_product_id_hash ON photos (style_id);
 
 /* INVENTORY */
 CREATE TABLE IF NOT EXISTS inventory (
@@ -83,8 +93,10 @@ CREATE TABLE IF NOT EXISTS inventory (
  quantity   varchar(50) NOT NULL,
  FOREIGN KEY ( style_id ) REFERENCES styles ( id )
 );
+
 COPY inventory(id, style_id, inv_size, quantity)
 FROM '/Users/andreworodenker/desktop/repos/SDC/csv/skus.csv'
 DELIMITER ','
 CSV HEADER;
-CREATE INDEX idx_inventory_product_id_hash ON inventory USING HASH (style_id);
+
+CREATE INDEX idx_inventory_product_id_hash ON inventory (style_id);
