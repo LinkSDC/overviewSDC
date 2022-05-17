@@ -22,12 +22,6 @@ This project was a brief 1-week sprint where I was tasked with creating a replac
 1. Download depencies with npm install
    > `npm install`
 
-2. Run webpack in development with:
+2. Run server with:
 
-   > `npm run client-dev`
-
-3. Run server with:
-
-   > `npm run server-start`
-
-5. Visit local site at http://localhost:3000
+   > `npm run start`
