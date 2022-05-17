@@ -17,11 +17,6 @@ This project was a brief 1-week sprint where I was tasked with creating a replac
 
 <br/>
 
-## Back-End Structure
-![image](https://lh3.googleusercontent.com/12j7fKqRnWREx77PXufgg4JM2Hw-JbmocQ9JSkaITUHvBs6Mv9DdB_KFb8Ej4EijSUPrM2C5b1q1hb6QnUnsUqqJsbNizfj2BFOnSTAVKSgRAtwIhQHtS2JjyC2CYpPCk5dbWXPMlw=w2400)
-
-<br/>
-
 ## Setup
 
 1. Download depencies with npm install
