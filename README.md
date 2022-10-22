@@ -5,7 +5,7 @@ This project was a brief 1-week sprint where I was tasked with creating a replac
 
 ## Contributers
 **[Andrew Orodenker](https://github.com/aorodenker)**\
-*Fullstack Engineer*
+*Backend Engineer*
 
 <br/>
 
